@@ -52,7 +52,7 @@ function toBlog(text) {
 function sendToContent(t, m) {
 	try {
 		chrome.tabs.query({active: true, currentWindow: true, url: "https://i.cnblogs.com/EditPosts.aspx*"}, function(tabs){  
-			console.log(t,tabs[0]);
+			//console.log(t,tabs[0]);
 			//判断是否是博客园页面
 			if (tabs[0] == undefined) {
 				blogEditPageFlag = false;
@@ -126,6 +126,85 @@ function onload() {
 			console.log('不是编辑页面，不用获取内容！');
 		}
 	}, 1000);
+
+	//实时滚动
+	cycle();
 }
 
 window.addEventListener("load", onload);
+
+//编辑框预览框实时滚动
+var txtMain;      // 输入框
+var spPreview;    // 预览框
+
+function getInput() {
+	var edotorFrame = window.frames['editorFrame'];
+	return edotorFrame.contentWindow.$('.ace_scrollbar.ace_scrollbar-v');
+}
+
+function getPreview() {
+	var showFrame = window.frames['showFrame'];
+	return showFrame.contentWindow.document.documentElement;
+}
+
+function scrollEvent(){
+	txtMain = getInput()[0];
+	spPreview = getPreview();
+
+	if(txtMain == undefined) {
+	  return;
+	}
+	if(spPreview == undefined) {
+	  return;
+	}
+
+	let mainFlag = false; // 抵消两个滚动事件之间互相触发
+	let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
+
+	function scrolling(who){
+	  if(who == 'pre'){
+	    preFlag = true;
+	    if (mainFlag === true){ // 抵消两个滚动事件之间互相触发
+	      mainFlag = false;
+	      preFlag = false;
+	      return;
+	    }
+	    console.log("scrollTop", txtMain.scrollTop, spPreview.scrollTop, 
+	    	"scrollHeight", txtMain.scrollHeight, spPreview.scrollHeight,
+	    	"clientHeight", txtMain.clientHeight, spPreview.clientHeight);
+	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
+	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
+	    return;
+	  }
+	  if(who == 'main'){
+	    mainFlag = true;
+	    if (preFlag === true){ // 抵消两个滚动事件之间互相触发
+	      mainFlag = false;
+	      preFlag = false;
+	      return;
+	    }
+	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
+	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    spPreview.scrollTop = Math.round(spLeft * txtMain.scrollTop / tetLeft);
+	    return;
+	  }
+	}
+
+	function mainOnscroll(){
+	  scrolling('main');
+	}
+
+	function preOnscroll(){
+	  scrolling('pre');
+	}
+
+	getInput().on('scroll', () => mainOnscroll());
+	getPreview().addEventListener('scroll', preOnscroll());
+}
+
+function cycle() {
+	scrollEvent();
+
+	window.setTimeout(cycle, 1000);
+}
