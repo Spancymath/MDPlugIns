@@ -1,8 +1,8 @@
 ﻿{
 	"name": "博客园markdown插件",      //扩展程序名称
 	"manifest_version": 2,  //文件打包版本，必须是2
-	"version": "1.0",   //程序版本号
-	"description": "适用于博客园编辑器，在markdown编辑模式下的即时显示排版插件",
+	"version": "1.1",   //程序版本号
+	"description": "适用于博客园编辑器，在markdown编辑模式下的即时显示排版插件。1.1新增同步滚动",
     "content_security_policy": "script-src 'self' https://cloud9ide.github.io; object-src 'self'",
 	"browser_action": //点击扩展程序事件
 	{
