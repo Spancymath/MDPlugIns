@@ -173,7 +173,7 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
-	    if (spLeft >= 0) return;
+	    if (spLeft <= 0) return;
 	    txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
 	    return;
 	  }
