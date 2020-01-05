@@ -15,6 +15,8 @@ function toShow(text) {
 
 //即时展示到右边窗口
 function toMardownStyle(text) {
+	//配合右边窗口最后一行看不到（新起一行时），加一行(\n是因为最后一行是网址会有问题)
+	text += "\n<br>";
 	var show = window.frames['showFrame'];
 	show.contentWindow.document.getElementById('content').innerHTML =
 	      marked(text);
@@ -169,11 +171,9 @@ function scrollEvent(){
 	      preFlag = false;
 	      return;
 	    }
-	    console.log("scrollTop", txtMain.scrollTop, spPreview.scrollTop, 
-	    	"scrollHeight", txtMain.scrollHeight, spPreview.scrollHeight,
-	    	"clientHeight", txtMain.clientHeight, spPreview.clientHeight);
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    if (spLeft >= 0) return;
 	    txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
 	    return;
 	  }
@@ -186,6 +186,7 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    if (tetLeft <= 0) return;
 	    spPreview.scrollTop = Math.round(spLeft * txtMain.scrollTop / tetLeft);
 	    return;
 	  }

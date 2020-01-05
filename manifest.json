@@ -17,6 +17,7 @@
 	}],
 	"permissions": [
 		"tabs",
-		"storage"
+		"storage",
+		"http://*/"//解决跨域加载图片问题
 	]
 }
