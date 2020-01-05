@@ -3,6 +3,10 @@
 
 仅用于博客园编辑器，其他不适用
 
+效果图
+
+![avatar](https://images.cnblogs.com/cnblogs_com/so-easy/1609140/o_%E6%89%A9%E5%B1%95%E7%A8%8B%E5%BA%8F.PNG)
+
 ## 下载
 打包插件下载地址 [Download](https://files.cnblogs.com/files/so-easy/MDPlugIns.rar "下载")
 
