@@ -16,7 +16,7 @@ function toShow(text) {
 //即时展示到右边窗口
 function toMardownStyle(text) {
 	//配合右边窗口最后一行看不到（新起一行时），加一行(\n是因为最后一行是网址会有问题)
-	text += "\n<br>";
+	text += "\n<br><br>";
 	var show = window.frames['showFrame'];
 	show.contentWindow.document.getElementById('content').innerHTML =
 	      marked(text);
@@ -139,6 +139,9 @@ window.addEventListener("load", onload);
 var txtMain;      // 输入框
 var spPreview;    // 预览框
 
+//var txtScrollHeight = 0;//输入框总高度
+var spScrollHeight = 0;//预览框总高度
+
 function getInput() {
 	var edotorFrame = window.frames['editorFrame'];
 	return edotorFrame.contentWindow.$('.ace_scrollbar.ace_scrollbar-v');
@@ -173,6 +176,7 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    //编辑器窗口没达到滚动长度
 	    if (spLeft <= 0) return;
 	    txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
 	    return;
@@ -186,6 +190,7 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    //预览窗口没达到滚动高度
 	    if (tetLeft <= 0) return;
 	    spPreview.scrollTop = Math.round(spLeft * txtMain.scrollTop / tetLeft);
 	    return;
@@ -198,6 +203,14 @@ function scrollEvent(){
 
 	function preOnscroll(){
 	  scrolling('pre');
+	}
+
+	//输入框没达到滚动高度时，预览框也要实时滚动
+	if (txtMain.scrollHeight == txtMain.clientHeight
+			&& spScrollHeight != spPreview.scrollHeight) {
+		console.log('view');
+		spPreview.scrollTop += (spPreview.scrollHeight - spScrollHeight);
+		spScrollHeight = spPreview.scrollHeight;
 	}
 
 	getInput().on('scroll', () => mainOnscroll());
