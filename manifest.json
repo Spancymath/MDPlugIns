@@ -1,0 +1,22 @@
+﻿{
+	"name": "博客园markdown插件",      //扩展程序名称
+	"manifest_version": 2,  //文件打包版本，必须是2
+	"version": "1.0",   //程序版本号
+	"description": "适用于博客园编辑器，在markdown编辑模式下的即时显示排版插件",
+    "content_security_policy": "script-src 'self' https://cloud9ide.github.io; object-src 'self'",
+	"browser_action": //点击扩展程序事件
+	{
+		"default_icon": "md.png",
+		"default_title": "MD Plug ins",
+		"default_popup": "popup.html"//默认的弹出页面
+	},	
+	"content_scripts": //匹配网址执行对应js
+	[{	//博客园编辑器
+		"matches": ["https://i.cnblogs.com/EditPosts.aspx*"],
+		"js": ["jquery-3.3.1.min.js", "content/blog.js"]
+	}],
+	"permissions": [
+		"tabs",
+		"storage"
+	]
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>博客园Markdown插件</title>
+		<script src="popup.js"></script>
+		<script src="marked.js"></script>
+		
+		<style type="text/css">
+			body {
+				width: 700px;
+			}
+
+			div{
+				display: inline;
+			}
+
+			iframe {
+				width: 340px;
+				height: 560px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="editorDiv">
+			<iframe id="editorFrame" src="editor/kitchen-sink.html"></iframe>
+		</div>
+		<div id="showDiv">
+			<iframe id="showFrame" src="show/show.html"></iframe>
+		</div>
+	</body>
+
+</html>
