@@ -1,7 +1,7 @@
 require("kitchen-sink/demo");
 //判断页面加载完成
 var loaded = false;
-
+//文本有变化才更新
 var sessionTextLocal = ""; 
 
 //页面初始化

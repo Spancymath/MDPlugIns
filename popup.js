@@ -1,11 +1,10 @@
 ﻿//是否博客园编辑页面
 var blogEditPageFlag = false;
-//是否onload
-var loaded = false;
 
 //显示内容--编辑器窗口触发
 function toShow(text) {
 	//console.log('parent');
+	//防止后边留的空行被删掉 todo
 	//即时展示到右边窗口
 	toMardownStyle(text);
 
@@ -13,10 +12,26 @@ function toShow(text) {
 	toBlog(text);
 }
 
+//编辑器空行--33行,吃掉一行，显示32行
+var eidtorBlankLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+//预览页空行--2+33-6
+var viewBlankLines = "\n\n<br><br><br><br><br><br><br><br><br><br><br><br><br>"
+					+ "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
+
+//增加编辑器里的空行
+function addEditorBlank(text) {
+	return text + eidtorBlankLines;
+}
+
+//增加预览窗口里的空行
+function addViewBlank(text) {
+	return text + viewBlankLines;
+}
+
 //即时展示到右边窗口
 function toMardownStyle(text) {
 	//配合右边窗口最后一行看不到（新起一行时），加一行(\n是因为最后一行是网址会有问题)
-	text += "\n<br><br>";
+	text = addViewBlank(text);
 	var show = window.frames['showFrame'];
 	show.contentWindow.document.getElementById('content').innerHTML =
 	      marked(text);
@@ -33,7 +48,8 @@ function toEditor(text) {
 	//赋值
 	textDom.eq(0).val(text);
 	textDom[0].dispatchEvent(new Event('input'));
-
+	//texare获取焦点，使得光标隐藏
+	textDom.eq(0).focus();
 }
 
 //展示回博客园编辑器
@@ -109,25 +125,26 @@ function sendToContent(t, m) {
 //blog中的内容展示到popup页--博客园页面返回
 function showToPopup(text) {
 	//展示到编辑器
-	toEditor(text);
+	toEditor(addEditorBlank(text));
 	//展示到markdown样式
 	//toMardownStyle(text);
-	loaded = true;
+	//loaded = true;
 }
 
 //页面初始化
 function onload() {
 	//判断是否编辑页面
 	sendToContent("blogEditorPage", "");
-	setTimeout(function() {
+	window.setTimeout(function() {
 		if (blogEditPageFlag) {
 			console.log('获取blog内容');
 			sendToContent('getContenText', '');
 		} else {
+			toEditor(addEditorBlank(""));
 			alert('警告: 非博客园编辑页面, 输入的所有内容，都不会被保存！！！');
 			console.log('不是编辑页面，不用获取内容！');
 		}
-	}, 1000);
+	}, 300);
 
 	//实时滚动
 	cycle();
@@ -138,6 +155,10 @@ window.addEventListener("load", onload);
 //编辑框预览框实时滚动
 var txtMain;      // 输入框
 var spPreview;    // 预览框
+//高度变化触发阈值
+var heightThred = 10;
+//缓存预览框top高度
+var spscrollTop = 0;
 
 //var txtScrollHeight = 0;//输入框总高度
 var spScrollHeight = 0;//预览框总高度
@@ -176,9 +197,17 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
+	    console.log(spPreview.scrollHeight, spPreview.clientHeight, spPreview.scrollTop);
 	    //编辑器窗口没达到滚动长度
 	    if (spLeft <= 0) return;
-	    txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
+	    // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
+	    // if (Math.abs(newTop - txtMain.scrollTop) > heightThred) {
+	    // 	txtMain.scrollTop = newTop;
+	    // }
+	    if (Math.abs(spscrollTop - spPreview.scrollTop) > heightThred) {
+	    	txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
+	    	spscrollTop = spPreview.scrollTop;
+	    }
 	    return;
 	  }
 	  if(who == 'main'){
@@ -193,6 +222,7 @@ function scrollEvent(){
 	    //预览窗口没达到滚动高度
 	    if (tetLeft <= 0) return;
 	    spPreview.scrollTop = Math.round(spLeft * txtMain.scrollTop / tetLeft);
+	    spscrollTop = spPreview.scrollTop;
 	    return;
 	  }
 	}
@@ -206,9 +236,9 @@ function scrollEvent(){
 	}
 
 	//输入框没达到滚动高度时，预览框也要实时滚动
-	if (txtMain.scrollHeight == txtMain.clientHeight
-			&& spScrollHeight != spPreview.scrollHeight) {
-		console.log('view');
+	if (txtMain.scrollHeight == 0
+			&& spScrollHeight < spPreview.scrollHeight) {
+		console.log('only view scroll');
 		spPreview.scrollTop += (spPreview.scrollHeight - spScrollHeight);
 		spScrollHeight = spPreview.scrollHeight;
 	}
