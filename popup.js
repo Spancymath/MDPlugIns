@@ -124,8 +124,8 @@ function sendToContent(t, m) {
 // 
 //blog中的内容展示到popup页--博客园页面返回
 function showToPopup(text) {
-	//展示到编辑器
-	toEditor(addEditorBlank(text));
+	//展示到编辑器、去掉前后空格（防止多次加载问题）
+	toEditor(addEditorBlank(text.trim()));
 	//展示到markdown样式
 	//toMardownStyle(text);
 	//loaded = true;
@@ -197,7 +197,7 @@ function scrollEvent(){
 	    }
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
-	    console.log(spPreview.scrollHeight, spPreview.clientHeight, spPreview.scrollTop);
+	    //console.log(spPreview.scrollHeight, spPreview.clientHeight, spPreview.scrollTop);
 	    //编辑器窗口没达到滚动长度
 	    if (spLeft <= 0) return;
 	    // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
