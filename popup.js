@@ -1,15 +1,49 @@
 ﻿//是否博客园编辑页面
 var blogEditPageFlag = false;
 
+//得到编辑器contentWindow
+function getEditorWindow() {
+	return window.frames['editorFrame'].contentWindow;
+}
+//得到预览窗contenWindow
+function getViewWindow() {
+	return window.frames['showFrame'].contentWindow;
+}
+
+//上一次展示内容
+var oldText = "";
+
 //显示内容--编辑器窗口触发
 function toShow(text) {
 	//console.log('parent');
-	//防止后边留的空行被删掉 todo
 	//即时展示到右边窗口
 	toMardownStyle(text);
 
 	//展示回博客园编辑器
 	toBlog(text);
+
+	//自动翻页
+	autoUp(text);
+}
+
+//自动翻页
+function autoUp(text) {
+	//预览界面
+	let viewObj = getPreview();
+	//如果编辑器内容增加
+	if (oldText != ""
+		&& text.length > oldText.length) {
+		let hideHeight = viewObj.scrollHeight - viewObj.clientHeight - viewObj.scrollTop;
+		//如果在内容中间修改，则返回
+		if (hideHeight > blankHeight + blankHeight / 2)
+			return;
+		//如果预览框隐藏了内容，就向上滚动
+		if (hideHeight > blankHeight) {
+			console.log('up');
+			viewObj.scrollTop = viewObj.scrollHeight - viewObj.clientHeight - blankHeight / 5;
+		}
+	}
+	oldText = text;
 }
 
 //编辑器空行--33行,吃掉一行，显示32行
@@ -17,7 +51,8 @@ var eidtorBlankLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 //预览页空行--2+33-6
 var viewBlankLines = "\n\n<br><br><br><br><br><br><br><br><br><br><br><br><br>"
 					+ "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
-
+//这么多空格的高度
+var blankHeight = 473;
 //增加编辑器里的空行
 function addEditorBlank(text) {
 	return text + eidtorBlankLines;
@@ -32,15 +67,13 @@ function addViewBlank(text) {
 function toMardownStyle(text) {
 	//配合右边窗口最后一行看不到（新起一行时），加一行(\n是因为最后一行是网址会有问题)
 	text = addViewBlank(text);
-	var show = window.frames['showFrame'];
-	show.contentWindow.document.getElementById('content').innerHTML =
+	getViewWindow().document.getElementById('content').innerHTML =
 	      marked(text);
 }
 
 //展示到编辑器
 function toEditor(text) {
-	var edotor = window.frames['editorFrame'];
-	var textDom = edotor.contentWindow.$('.ace_text-input');
+	var textDom = getEditorWindow().$('.ace_text-input');
 	// if (textDom.eq(0).val() != "") {
 	// 	console.log("清空");
 	// 	edotor.contentWindow.$('#editor-container .ace_layer.ace_text-layer .ace_line_group').remove();
@@ -164,13 +197,11 @@ var spscrollTop = 0;
 var spScrollHeight = 0;//预览框总高度
 
 function getInput() {
-	var edotorFrame = window.frames['editorFrame'];
-	return edotorFrame.contentWindow.$('.ace_scrollbar.ace_scrollbar-v');
+	return getEditorWindow().$('.ace_scrollbar.ace_scrollbar-v');
 }
 
 function getPreview() {
-	var showFrame = window.frames['showFrame'];
-	return showFrame.contentWindow.document.documentElement;
+	return getViewWindow().document.documentElement;
 }
 
 function scrollEvent(){
@@ -198,12 +229,13 @@ function scrollEvent(){
 	    let tetLeft = txtMain.scrollHeight - txtMain.clientHeight;
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
 	    //console.log(spPreview.scrollHeight, spPreview.clientHeight, spPreview.scrollTop);
-	    //编辑器窗口没达到滚动长度
+	    //编辑器窗口未达到滚动长度，还没有出现滚动条
 	    if (spLeft <= 0) return;
 	    // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
 	    // if (Math.abs(newTop - txtMain.scrollTop) > heightThred) {
 	    // 	txtMain.scrollTop = newTop;
 	    // }
+	    //编辑器窗口高度变化大于阈值，才触发编辑器窗口滚动--优化编辑器窗口上下弹跳
 	    if (Math.abs(spscrollTop - spPreview.scrollTop) > heightThred) {
 	    	txtMain.scrollTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
 	    	spscrollTop = spPreview.scrollTop;
