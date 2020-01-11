@@ -13,8 +13,8 @@ function onload() {
 	$('.ace_optionsMenuEntry #-doc').val("Markdown");
 	$('.ace_optionsMenuEntry #-doc')[0].dispatchEvent(new Event('change'));
 	//todo 不生效，有高手可以搞搞
-	$('.ace_optionsMenuEntry #-doc').attr('disabled', "disabled");
-	$('.ace_optionsMenuEntry #-mode').attr('disabled', "disabled");
+	// $('.ace_optionsMenuEntry #-doc').attr('disabled', "disabled");
+	// $('.ace_optionsMenuEntry #-mode').attr('disabled', "disabled");
 	//关闭侧边栏
 	onresize(null, true);
 	loaded = true;
