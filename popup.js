@@ -26,6 +26,11 @@ function toShow(text) {
 	autoUp(text);
 }
 
+//增加标志
+var increaseFlag = false;
+//上一次隐藏高度
+var lastHideHeight = 0;
+
 //自动翻页
 function autoUp(text) {
 	//预览界面
@@ -33,9 +38,16 @@ function autoUp(text) {
 	//如果编辑器内容增加
 	if (oldText != ""
 		&& text.length > oldText.length) {
+		increaseFlag = true;
+	    //console.log('0', increaseFlag);
 		let hideHeight = viewObj.scrollHeight - viewObj.clientHeight - viewObj.scrollTop;
+		//console.log(lastHideHeight, hideHeight);
+		//高度没有变化则返回
+		if (lastHideHeight === hideHeight) return;
+		lastHideHeight = hideHeight;
+		//console.log('hideHeight: ' + hideHeight);
 		//如果在内容中间修改，则返回
-		if (hideHeight > blankHeight + blankHeight / 2)
+		if (hideHeight > blankHeight + blankHeight / 10)
 			return;
 		//如果预览框隐藏了内容，就向上滚动
 		if (hideHeight > blankHeight) {
@@ -52,7 +64,7 @@ var eidtorBlankLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 var viewBlankLines = "\n\n<br><br><br><br><br><br><br><br><br><br><br><br><br>"
 					+ "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
 //这么多空格的高度
-var blankHeight = 473;
+var blankHeight = 458;
 //增加编辑器里的空行
 function addEditorBlank(text) {
 	return text + eidtorBlankLines;
@@ -189,9 +201,11 @@ window.addEventListener("load", onload);
 var txtMain;      // 输入框
 var spPreview;    // 预览框
 //高度变化触发阈值
-var heightThred = 10;
+var heightThred = 15;
 //缓存预览框top高度
 var spscrollTop = 0;
+//缓存输入框top高度
+var mainScrollTop = 0;
 
 //var txtScrollHeight = 0;//输入框总高度
 var spScrollHeight = 0;//预览框总高度
@@ -253,6 +267,16 @@ function scrollEvent(){
 	    let spLeft = spPreview.scrollHeight - spPreview.clientHeight;
 	    //预览窗口没达到滚动高度
 	    if (tetLeft <= 0) return;
+	    //输入框top没变化，返回
+	    if (mainScrollTop === txtMain.scrollTop) return;
+	    mainScrollTop = txtMain.scrollTop;
+	    //如果在输入则不触发scroll
+	    //console.log('1', increaseFlag);
+	    if (increaseFlag) {
+	    	increaseFlag = false;
+	    	return;
+	    }
+	    //console.log('main --> pre', txtMain.scrollTop);
 	    spPreview.scrollTop = Math.round(spLeft * txtMain.scrollTop / tetLeft);
 	    spscrollTop = spPreview.scrollTop;
 	    return;
