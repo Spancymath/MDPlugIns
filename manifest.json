@@ -12,7 +12,7 @@
 	},	
 	"content_scripts": //匹配网址执行对应js
 	[{	//博客园编辑器
-		"matches": ["https://i.cnblogs.com/EditPosts.aspx*"],
+		"matches": ["https://i1.cnblogs.com/EditPosts.aspx*"],
 		"js": ["jquery-3.3.1.min.js", "content/blog.js"]
 	}],
 	"permissions": [

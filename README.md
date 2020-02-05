@@ -12,6 +12,16 @@
 
 需要插件离线安装软件, 欢迎访问我的博客--[少年小白]
 
+**特别注意：**在博客园的管理-->设置-->页首Html代码里面添加如下代码
+```
+<script>
+
+//使用旧版后台
+$('#blog_nav_admin').attr('href', 'https://i1.cnblogs.com/');
+
+</script>
+```
+
 ## 感谢
 感谢另外两个仓库：
 > https://github.com/ajaxorg/ace-builds.git  

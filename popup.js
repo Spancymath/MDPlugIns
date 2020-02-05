@@ -114,7 +114,7 @@ function toBlog(text) {
 //参数为类型和消息
 function sendToContent(t, m) {
 	try {
-		chrome.tabs.query({active: true, currentWindow: true, url: "https://i.cnblogs.com/EditPosts.aspx*"}, function(tabs){  
+		chrome.tabs.query({active: true, currentWindow: true, url: "https://i1.cnblogs.com/EditPosts.aspx*"}, function(tabs){  
 			//console.log(t,tabs[0]);
 			//判断是否是博客园页面
 			if (tabs[0] == undefined) {
