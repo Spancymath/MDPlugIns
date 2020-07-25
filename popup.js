@@ -184,12 +184,17 @@ function onload() {
 		if (blogEditPageFlag) {
 			console.log('获取blog内容');
 			sendToContent('getContenText', '');
+			//初始化为翻页到页面底部
+			window.setTimeout(function() {
+				txtMain.scrollTop = txtMain.scrollHeight - txtMain.clientHeight - 100;
+				spPreview.scrollTop = spPreview.scrollHeight - spPreview.clientHeight - 100;
+			}, 200);
 		} else {
 			toEditor(addEditorBlank(""));
 			alert('警告: 非博客园编辑页面, 输入的所有内容，都不会被保存！！！');
 			console.log('不是编辑页面，不用获取内容！');
 		}
-	}, 300);
+	}, 100);
 
 	//实时滚动
 	cycle();
