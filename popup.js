@@ -1,4 +1,6 @@
-﻿//是否博客园编辑页面
+﻿//编辑页面网址
+const EDIT_PAGE_URL = "https://i.cnblogs.com/posts/edit*";
+//是否博客园编辑页面
 var blogEditPageFlag = false;
 
 //得到编辑器contentWindow
@@ -114,8 +116,8 @@ function toBlog(text) {
 //参数为类型和消息
 function sendToContent(t, m) {
 	try {
-		chrome.tabs.query({active: true, currentWindow: true, url: "https://i1.cnblogs.com/EditPosts.aspx*"}, function(tabs){  
-			//console.log(t,tabs[0]);
+		chrome.tabs.query({active: true, currentWindow: true, url: EDIT_PAGE_URL}, function(tabs){  
+			console.log(t,tabs[0]);
 			//判断是否是博客园页面
 			if (tabs[0] == undefined) {
 				blogEditPageFlag = false;
@@ -133,7 +135,7 @@ function sendToContent(t, m) {
 					}
 				} else if (t == 'getContenText') {
 					if(typeof response != 'undefined'){
-						//console.log(response.res);
+						console.log(response.res);
 						showToPopup(response.res);
 					}
 				}else if (t == 'sendContenText') {
