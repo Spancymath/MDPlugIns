@@ -5,22 +5,11 @@
 
 效果图----加载慢可以到[我的博客][少年小白]中查看
 
-![avatar](https://images.cnblogs.com/cnblogs_com/so-easy/1609140/o_%E6%89%A9%E5%B1%95%E7%A8%8B%E5%BA%8F.PNG)
+![1.0版](https://images.cnblogs.com/cnblogs_com/so-easy/1609140/o_%E6%89%A9%E5%B1%95%E7%A8%8B%E5%BA%8F.PNG)
 
 ## 下载
-打包插件下载地址`https://files.cnblogs.com/files/so-easy/MDPlugIns1.2.rar`
+需要chrome扩展程序，或者插件离线安装软件, 欢迎访问我的博客--[少年小白]
 
-需要插件离线安装软件, 欢迎访问我的博客--[少年小白]
-
-**特别注意：**在博客园的管理-->设置-->页首Html代码里面添加如下代码
-```
-<script>
-
-//使用旧版后台
-$('#blog_nav_admin').attr('href', 'https://i1.cnblogs.com/');
-
-</script>
-```
 
 ## 感谢
 感谢另外两个仓库：
