@@ -13,7 +13,8 @@ function popEditClick() {
 	$('cnb-root').hide();
 	setTimeout(function() {
 		spScrollTop = 0;
-		scrolling("pre"); 
+		scrolling("pre");
+		console.log("timeout pre");
 	}, 200);
 }
 
@@ -46,6 +47,7 @@ function dealData(data) {
 		//消息传给显示页和博客页面
 		viewWindow().postMessage(data, "*");
 		$("#" + EDIT_TEXTAREA_ID).val(data.message);
+		autoUp(data.message);
 	}
 
 	// console.log(data.scrollTop, data.scrollHeight, data.clientHeight, data.from);
@@ -114,7 +116,7 @@ function scrolling(who){
     }
     let tetLeft = txtScrollHeight - txtClientHeight;
     let spLeft = spScrollHeight - spClientHeight;
-    console.log(spScrollTop, newSpScrollTop, spLeft);
+    console.log("pre: " + spScrollTop, newSpScrollTop, spLeft, tetLeft);
     //编辑器窗口未达到滚动长度，还没有出现滚动条
     if (spLeft <= 0) return;
     // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
@@ -122,7 +124,7 @@ function scrolling(who){
     // 	txtMain.scrollTop = newTop;
     // }
     
-    //顶部优化
+    //顶部优化newSpScrollTop==0的时候
     if (!newSpScrollTop) {
     	newTxtScrollTop = 0;
     	sendScroll2Txt();
@@ -169,11 +171,36 @@ function scrolling(who){
   }
 }
 
-// function cycle() {
-// 	scrollEvent();
+//上一次展示内容
+var oldText = "";
+//预览页面插入的空行的高度
+var blankHeight = 560;
 
-// 	window.setTimeout(cycle, 1000);
-// }
+//自动翻页
+function autoUp(text) {
+	//如果编辑器内容增加
+	if (oldText != "" && text.length > oldText.length) {
+		increaseFlag = true;
+	    console.log('autoUp 0', increaseFlag);
+		let hideHeight = spScrollHeight - spClientHeight - newSpScrollTop;
+		console.log(lastHideHeight, hideHeight);
+		//高度没有变化则返回
+		if (lastHideHeight === hideHeight) return;
+		lastHideHeight = hideHeight;
+		console.log('hideHeight: ' + hideHeight);
+		//如果在内容中间修改，则返回
+		if (hideHeight > blankHeight + blankHeight / 16)
+			return;
+		//如果预览框隐藏了内容，就向上滚动
+		if (hideHeight > blankHeight) {
+			console.log('up');
+			newSpScrollTop = spScrollHeight - spClientHeight - blankHeight / 5;
+			sendScroll2Preview();
+			//这里不修改spScrollTop的值，待show页面回传过来再修改
+		}
+	}
+	oldText = text;
+}
 
 function sendScroll2Preview() {
 	var data = {"scrollTop": newSpScrollTop};

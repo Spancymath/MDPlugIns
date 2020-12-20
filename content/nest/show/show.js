@@ -25,7 +25,7 @@ function dealData(data) {
 	}
 
 	if (data.scrollTop == 0 || data.scrollTop) {
-		// console.log(data.scrollTop)
+		console.log("show scrollTop: " + data.scrollTop);
 		spPreview.scrollTop = data.scrollTop;
 	}
 	//让父页面初始化展示页信息

@@ -45,8 +45,8 @@ var txtMainWindow = $('.ace_scrollbar.ace_scrollbar-v');
 //实时滚动
 var txtMain = txtMainWindow[0];
 
-//编辑器空行--33行,吃掉一行，显示32行
-var eidtorBlankLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+//编辑器空行--43行,吃掉一行，显示42行
+var eidtorBlankLines = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 //增加编辑器里的空行
 function addEditorBlank(text) {
 	return text + eidtorBlankLines;
@@ -71,9 +71,9 @@ function dealData(data) {
 	}
 
 	if (data.scrollTop == 0 || data.scrollTop) {
-		console.log("edit scrollTop:" + data.scrollTop, "scrollHeight:" + txtMain.scrollHeight, 
-			"clientHeight: " + txtMain.clientHeight);
-		$(txtMain).scrollTop(0);
+		// console.log("edit scrollTop:" + data.scrollTop, "scrollHeight:" + txtMain.scrollHeight, 
+		// 	"clientHeight: " + txtMain.clientHeight);
+		$(txtMain).scrollTop(data.scrollTop + 20);
 		$(txtMain).scrollTop(data.scrollTop);
 	}
 
@@ -90,13 +90,14 @@ window.addEventListener('message', function (e) {
 }, false);
 
 //监听页面滚动事件
-txtMainWindow.on('scroll', function() {
+$(txtMain).on('scroll', function() {
 	var data = {
 		"scrollHeight": Math.round(txtMain.scrollHeight * 100) / 100,
 		"clientHeight": Math.round(txtMain.clientHeight * 100) / 100,
 		"scrollTop": Math.round(txtMain.scrollTop * 100) / 100,
 		"from": "txtMain"
 	};
+	// console.log("txtMain发送scroll数据：" + data.scrollHeight, data.clientHeight);
 	window.parent.postMessage(data, '*');
 });
 
