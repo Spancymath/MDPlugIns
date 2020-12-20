@@ -1,6 +1,10 @@
+/**
+ * 和pop页进行通信，并同步内容
+ */
 //编辑页面文本框id
 const EDIT_TEXTAREA_ID = "md-editor";
 
+//给pop页面用
 try {
 	//监听popup消息
 	chrome.runtime.onMessage.addListener(
@@ -24,11 +28,3 @@ try {
 } catch (e) {
 	console.log('connection error');
 }
-// 
-// chrome.runtime.onConnect.addListener((port) => {
-//   port.onMessage.addListener((msg) => {
-//     if (msg.function == 'blogEditorPage') {
-//       port.postMessage({ res: true});
-//     }
-//   });
-// });

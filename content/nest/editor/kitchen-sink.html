@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height" />
+    <title>Ace Kitchen Sink</title>
+    <meta name="author" content="Fabian Jakobs">
+
+    <link rel="stylesheet" href="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/demo/kitchen-sink/styles.css" type="text/css" media="screen" charset="utf-8">
+    
+    <script async="true" src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/source-code-pro.js"></script>
+    
+</head>
+<body>
+  <div id="sidePanel" style="position:absolute;height:100%;">
+    <div class="toggleButton">
+    <div></div><div></div><div></div>
+    </div>
+    <img id="c9-logo" src="demo/kitchen-sink/logo.png" style="width: 172px;margin: -9px 30px -12px 51px;">
+    <div style="position: absolute; overflow: hidden; top:100px; bottom:0">
+      <div id="optionsPanel" style="width: 120%; height:100%; overflow-y: scroll">
+        <img id="ace-logo" src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/demo/kitchen-sink/ace-logo.png" style="width: 134px;margin: 46px 0px 4px 66px;">
+      </div>
+    </div>
+  </div>
+  <div id="editor-container"></div>
+
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/src/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/src/keybinding-vim.js"></script>
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/src/keybinding-emacs.js"></script>
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/demo/kitchen-sink/demo.js"></script>
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/jquery-3.3.1.min.js" type="text/javascript"></script>
+  <script src="chrome-extension://jdkmjlgljbkghdphekgineneigfchkgb/content/nest/editor/editor.js" type="text/javascript"></script>
+
+</body>
+</html>
