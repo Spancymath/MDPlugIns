@@ -13,7 +13,7 @@ function popEditClick() {
 	$('cnb-root').hide();
 	setTimeout(function() {
 		spScrollTop = 0;
-		scrolling("pre");
+		scrolling("pre"); 
 	}, 200);
 }
 
