@@ -70,7 +70,8 @@ function dealData(data) {
 		//显示编辑器按钮
 		if ("showMD" == data.dealType) {
 			$(".loadEffect").hide();
-			$("#md_plugin_div").show();
+			if ($("#md_plugin_div")) $("#md_plugin_div").show();
+			
 		}
 	}
 }

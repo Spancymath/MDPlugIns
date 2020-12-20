@@ -4,12 +4,20 @@
 //编辑页面文本框id
 const EDIT_TEXTAREA_ID = "md-editor";
 
+//嵌入页面的页面编辑器id
+const NEST_PAGE_MD_ID = "nestMDDiv";
+
 //给pop页面用
 try {
 	//监听popup消息
 	chrome.runtime.onMessage.addListener(
 		function(request, sender, sendResponse){
 			if (request.type == "blogEditorPage") {
+				//没有隐藏页面编辑器时，不允许打开popup版本
+				if (!$("#" + NEST_PAGE_MD_ID).is(":hidden")) {
+					console.log("make nest page MD hidden");
+					$("#coloseDiv").trigger("click");
+				}
 				//告诉popup页是编辑页面
 				sendResponse({res: true});
 			} else if (request.type == "sendContenText") {
