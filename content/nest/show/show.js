@@ -1,8 +1,8 @@
 //实时滚动
 var spPreview = document.documentElement;
-//预览页空行--2+33-6
-var viewBlankLines = "\n\n<br><br><br><br><br><br><br><br><br><br><br><br><br>"
-					+ "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
+//预览页空行--2+43-6
+var viewBlankLines = "\n\n<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
+					+"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
 
 //增加预览窗口里的空行
 function addViewBlank(text) {

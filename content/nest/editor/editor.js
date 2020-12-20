@@ -18,6 +18,10 @@ function onload() {
 	//关闭侧边栏
 	onresize(null, true);
 	loaded = true;
+
+	//显示编辑器按钮
+	var data = {"dealType": "showMD"};
+	window.parent.postMessage(data, '*');
 }
 
 window.addEventListener("load", onload);
@@ -67,8 +71,10 @@ function dealData(data) {
 	}
 
 	if (data.scrollTop == 0 || data.scrollTop) {
-		// console.log("edit scrollTop:" + data.scrollTop);
-		txtMain.scrollTop = data.scrollTop;
+		console.log("edit scrollTop:" + data.scrollTop, "scrollHeight:" + txtMain.scrollHeight, 
+			"clientHeight: " + txtMain.clientHeight);
+		$(txtMain).scrollTop(0);
+		$(txtMain).scrollTop(data.scrollTop);
 	}
 
 	if (data.dealType) {

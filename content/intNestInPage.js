@@ -32,12 +32,17 @@ function init() {
 	     $("#nestMDDiv").html(data);
 	});
 
+	//编辑器加载完成前显示加载中
+	var loadingDiv = "<div class='loadEffect'>" +
+		"<span></span><span></span><span></span><span></span><span></span><span></span><span></span>" +
+		"<span></span></div>";
+
 	//编辑器按钮
-	var editPicHtml = "<span id='md_plugin_div' onclick='popEditClick()' style='width:20px;'>" +
+	var editPicHtml = "<span id='md_plugin_div' onclick='popEditClick()' style='width:20px;display:none;'>" +
 		// "onmouseover='this.style.cursor=&quot;hand&quot;' onmouseout='this.style.cursor=&quot;normal&quot;'>" +
 		"<a href='javascript:;'><img style='width:100%;' src='" + MD_PLUGIN_PIC + "'></a></span>";
 	//插入编辑器触发按钮
-	$(EDIT_TOOL_CHOOSE_LABEL).before(editPicHtml);
+	$(EDIT_TOOL_CHOOSE_LABEL).before(loadingDiv + editPicHtml);
 }
 
 //注入js

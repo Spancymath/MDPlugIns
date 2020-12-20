@@ -11,6 +11,10 @@ function popEditClick() {
 	editorWindow().postMessage({"message": message}, "*");
 	$('#nestMDDiv').show();
 	$('cnb-root').hide();
+	setTimeout(function() {
+		spScrollTop = 0;
+		scrolling("pre");
+	}, 200);
 }
 
 //点击关闭编辑器
@@ -59,6 +63,14 @@ function dealData(data) {
 			scrolling('main');
 		}
 	}
+
+	if (data.dealType) {
+		//显示编辑器按钮
+		if ("showMD" == data.dealType) {
+			$(".loadEffect").hide();
+			$("#md_plugin_div").show();
+		}
+	}
 }
 
 //监听从编辑器发出的数据
@@ -74,7 +86,7 @@ var increaseFlag = false;
 //上一次隐藏高度
 var lastHideHeight = 0;
 //高度变化触发阈值
-var heightThred = 15;
+var heightThred = 35;
 //缓存预览框top高度
 var spScrollTop = 0;
 //缓存输入框top高度
@@ -90,16 +102,6 @@ var spScrollHeight = 0;//预览框总高度
 var txtClientHeight = 0;//输入框高度
 var spClientHeight = 0;//预览框高度
 
-// function scrollEvent(){
-// 	//输入框没达到滚动高度时，预览框也要实时滚动
-// 	if (txtMain.scrollHeight == 0
-// 			&& spScrollHeight < spPreview.scrollHeight) {
-// 		console.log('only view scroll');
-// 		spPreview.scrollTop += (spPreview.scrollHeight - spScrollHeight);
-// 		spScrollHeight = spPreview.scrollHeight;
-// 	}
-// }
-
 let mainFlag = false; // 抵消两个滚动事件之间互相触发
 let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
 function scrolling(who){
@@ -112,7 +114,7 @@ function scrolling(who){
     }
     let tetLeft = txtScrollHeight - txtClientHeight;
     let spLeft = spScrollHeight - spClientHeight;
-    // console.log(spScrollTop, newSpScrollTop, spLeft);
+    console.log(spScrollTop, newSpScrollTop, spLeft);
     //编辑器窗口未达到滚动长度，还没有出现滚动条
     if (spLeft <= 0) return;
     // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
