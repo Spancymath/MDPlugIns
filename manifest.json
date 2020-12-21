@@ -1,31 +1,23 @@
-﻿{
-	"name": "博客园markdown插件",      //扩展程序名称
-	"manifest_version": 2,  //文件打包版本，必须是2
-	"version": "2.0",   //程序版本号
-	"description": "适用于新版博客园编辑器，在markdown编辑模式下的即时显示排版插件。2.0增加嵌入页面的markdown编辑器",
-    "content_security_policy": "script-src 'self' https://cloud9ide.github.io; object-src 'self'",
-	"browser_action": //点击扩展程序事件
-	{
-		"default_icon": "md.png",
-		"default_title": "MD Plug ins",
-		"default_popup": "popup.html"//默认的弹出页面
-	},	
-	"content_scripts": //匹配网址执行对应js
-	[{	//博客园编辑器
-		"matches": ["https://i.cnblogs.com/posts/edit*"],
-		"js": ["jquery-3.3.1.min.js", "content/intNestInPage.js", "content/connectPopPage.js"]
-	},
-	{	//用于检测是否到了编辑页面，从而重载页面
-		"matches": ["https://i.cnblogs.com/*"],
-		"js": ["jquery-3.3.1.min.js", "content/detachEditUrl.js"]
-	}],
-	"permissions": [
-		"tabs",
-		"storage",
-		"http://*/"//解决跨域加载图片问题
-	],
-	//资源可以被注入到页面
-	"web_accessible_resources": [
-		"content/nest/*", "marked.js", "jquery-3.3.1.min.js"
-	]
+{
+   "browser_action": {
+      "default_icon": "md.png",
+      "default_popup": "popup.html",
+      "default_title": "MD Plug ins"
+   },
+   "content_scripts": [ {
+      "js": ["content/intNestInPage.js", "content/connectPopPage.js" ],
+      "matches": [ "https://i.cnblogs.com/posts/edit*" ]
+   }, {
+      "js": [ "jquery-3.3.1.min.js", "content/detachEditUrl.js" ],
+      "matches": [ "https://i.cnblogs.com/*" ]
+   } ],
+   "content_security_policy": "script-src 'self' https://cloud9ide.github.io; object-src 'self'",
+   "description": "适用于新版博客园编辑器，在markdown编辑模式下的即时显示排版插件。2.0增加嵌入页面的markdown编辑器",
+   //设置key可以使每次以文件夹方式加载扩展，id都相同；使用相同pem私钥打包扩展程序，可以使打包后的id都一样
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsnkp/v6QxuI7gRVS7VyIcFmb60rCW83aYswKTJOLnENYDsM7Epn1z3TjC3dHKgCLWtH4lvJAiO2JSt69ApkriPHmW1f86/2ptckvJ8f5XFHAzvr9LjBPS288sCSeOj237SdQe8CfCb8QKHRG/+hjZtVv1x9bJ9PBAcoJSg0XRUOsHPXOxecjhrEDSBHl9t0VWnKNAnwrhYW7yq44YzGUPUoObzOdhsbgHIYV6lqzICJm+eDGtxEdg7/rkqTOVd01yk4afyZlOKWgp0Z49X+oLSht4FauAeRfd/m0P0TNas/DsUgEZCfLg7j84SH0/XL5HpKysOwdGROCI1fULJGHZwIDAQAB",
+   "manifest_version": 2,
+   "name": "博客园markdown插件",
+   "permissions": [ "tabs", "storage", "http://*/" ],
+   "version": "2.0",
+   "web_accessible_resources": [ "content/nest/*", "marked.js", "jquery-3.3.1.min.js" ]
 }

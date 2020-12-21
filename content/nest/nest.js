@@ -8,13 +8,13 @@ function popEditClick() {
 	//把博客里的文本复制到编辑器插件里
 	var message = $("#" + EDIT_TEXTAREA_ID).val();
 	// console.log("文本框的值" + message);
-	editorWindow().postMessage({"message": message}, "*");
+	editorWindow().postMessage({"message": message, "dealType": "setSidePanel"}, "*");
 	$('#nestMDDiv').show();
 	$('cnb-root').hide();
 	setTimeout(function() {
 		spScrollTop = 0;
 		scrolling("pre");
-		console.log("timeout pre");
+		// console.log("timeout pre");
 	}, 200);
 }
 
@@ -78,7 +78,7 @@ function dealData(data) {
 
 //监听从编辑器发出的数据
 window.addEventListener('message', function (e) {
-	console.log("父页面收到了数据");
+	// console.log("父页面收到了数据");
 	dealData(e.data);
 }, false);
 
@@ -117,7 +117,7 @@ function scrolling(who){
     }
     let tetLeft = txtScrollHeight - txtClientHeight;
     let spLeft = spScrollHeight - spClientHeight;
-    console.log("pre: " + spScrollTop, newSpScrollTop, spLeft, tetLeft);
+    // console.log("pre: " + spScrollTop, newSpScrollTop, spLeft, tetLeft);
     //编辑器窗口未达到滚动长度，还没有出现滚动条
     if (spLeft <= 0) return;
     // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
@@ -182,13 +182,13 @@ function autoUp(text) {
 	//如果编辑器内容增加
 	if (oldText != "" && text.length > oldText.length) {
 		increaseFlag = true;
-	    console.log('autoUp 0', increaseFlag);
+	    // console.log('autoUp 0', increaseFlag);
 		let hideHeight = spScrollHeight - spClientHeight - newSpScrollTop;
 		console.log(lastHideHeight, hideHeight);
 		//高度没有变化则返回
 		if (lastHideHeight === hideHeight) return;
 		lastHideHeight = hideHeight;
-		console.log('hideHeight: ' + hideHeight);
+		// console.log('hideHeight: ' + hideHeight);
 		//如果在内容中间修改，则返回
 		if (hideHeight > blankHeight + blankHeight / 16)
 			return;

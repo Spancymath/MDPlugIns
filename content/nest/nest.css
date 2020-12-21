@@ -17,13 +17,13 @@
 #editorDiv {
     position: relative;
     float: left;
-    width: 36%;
+    width: 37%;
     height: 100%;
 }
 /**显示**/
 #showDiv {
     float: right;
-    width: 64%;
+    width: 63%;
     height: 100%;
     background: white;
 }

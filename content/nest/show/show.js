@@ -25,7 +25,7 @@ function dealData(data) {
 	}
 
 	if (data.scrollTop == 0 || data.scrollTop) {
-		console.log("show scrollTop: " + data.scrollTop);
+		// console.log("show scrollTop: " + data.scrollTop);
 		spPreview.scrollTop = data.scrollTop;
 	}
 	//让父页面初始化展示页信息
@@ -34,7 +34,7 @@ function dealData(data) {
 
 //监听父页面传来的消息
 window.addEventListener('message', function (e) {
-	console.log("展示页面收到了父页面发送的数据");
+	// console.log("展示页面收到了父页面发送的数据");
 	dealData(e.data);
 }, false);
 

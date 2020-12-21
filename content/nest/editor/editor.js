@@ -8,15 +8,14 @@ var sessionTextLocal = "";
 function onload() {
 	console.log('editor onload');
 	//默认自动换行显示
-	$('.ace_optionsMenuEntry').find("button[value='free']").click();
+	$('.ace_optionsMenuEntry').find("button[value='free']").trigger("click");
 	//默认markdown模式不可修改
 	$('.ace_optionsMenuEntry #-doc').val("Markdown");
 	$('.ace_optionsMenuEntry #-doc')[0].dispatchEvent(new Event('change'));
 	//todo 不生效，有高手可以搞搞
 	// $('.ace_optionsMenuEntry #-doc').attr('disabled', "disabled");
 	// $('.ace_optionsMenuEntry #-mode').attr('disabled', "disabled");
-	//关闭侧边栏
-	onresize(null, true);
+	
 	loaded = true;
 
 	//显示编辑器按钮
@@ -80,12 +79,14 @@ function dealData(data) {
 	if (data.dealType) {
 		// console.log("edit dealType:" + data.dealType);
 		if ("clear" === data.dealType) refreshPage();
+
+		if ("setSidePanel") setSidePanel();
 	}
 }
 
 //监听父页面传来的消息
 window.addEventListener('message', function (e) {
-	console.log("编辑页面收到了父页面发送的数据");
+	// console.log("编辑页面收到了父页面发送的数据");
 	dealData(e.data);
 }, false);
 
@@ -104,4 +105,13 @@ $(txtMain).on('scroll', function() {
 function refreshPage() {
 	//清空编辑器的值
 	env.editor.setValue("", -1);
+}
+
+//设置侧边栏
+function setSidePanel() {
+	// console.log("setSidePanel");
+	//关闭侧边栏
+	setTimeout(function() {
+		onresize(null, true);
+	}, 10);
 }
