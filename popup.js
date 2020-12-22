@@ -1,5 +1,5 @@
 ﻿//编辑页面网址
-const EDIT_PAGE_URL = "https://i.cnblogs.com/posts/edit*";
+const EDIT_PAGE_URL = "https://i.cnblogs.com/posts/edit;*";
 //是否博客园编辑页面
 var blogEditPageFlag = false;
 

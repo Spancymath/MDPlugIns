@@ -6,7 +6,7 @@
    },
    "content_scripts": [ {
       "js": ["content/intNestInPage.js", "content/connectPopPage.js" ],
-      "matches": [ "https://i.cnblogs.com/posts/edit*" ]
+      "matches": [ "https://i.cnblogs.com/posts/edit;*" ]
    }, {
       "js": [ "jquery-3.3.1.min.js", "content/detachEditUrl.js" ],
       "matches": [ "https://i.cnblogs.com/*" ]
