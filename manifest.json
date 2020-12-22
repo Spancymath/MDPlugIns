@@ -1,23 +1,33 @@
 {
-   "browser_action": {
-      "default_icon": "md.png",
-      "default_popup": "popup.html",
+   "name": "博客园markdown插件",//扩展程序名称
+   "version": "2.0",  //程序版本号
+   "manifest_version": 2,  // 文件打包版本，自测2才好使
+   "description": "适用于新版博客园编辑器，在markdown编辑模式下的即时显示排版插件。2.0增加嵌入页面的markdown编辑器模式。",
+   "icons": {
+     "16": "icon16.png",
+     "48": "icon48.png",
+     "128": "icon128.png"
+   },
+   "browser_action": {  //点击扩展程序事件
+      "default_popup": "popup.html",//默认的弹出页面
       "default_title": "MD Plug ins"
    },
-   "content_scripts": [ {
+   "content_scripts": [// 匹配网址，执行对应的文件
+   {//用于检测是否到了编辑页面，从而重载页面
       "js": ["content/intNestInPage.js", "content/connectPopPage.js" ],
       "matches": [ "https://i.cnblogs.com/posts/edit;*" ]
-   }, {
+   }, {// 博客园编辑器 
       "js": [ "jquery-3.3.1.min.js", "content/detachEditUrl.js" ],
       "matches": [ "https://i.cnblogs.com/*" ]
    } ],
    "content_security_policy": "script-src 'self' https://cloud9ide.github.io; object-src 'self'",
-   "description": "适用于新版博客园编辑器，在markdown编辑模式下的即时显示排版插件。2.0增加嵌入页面的markdown编辑器",
    //设置key可以使每次以文件夹方式加载扩展，id都相同；使用相同pem私钥打包扩展程序，可以使打包后的id都一样
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsnkp/v6QxuI7gRVS7VyIcFmb60rCW83aYswKTJOLnENYDsM7Epn1z3TjC3dHKgCLWtH4lvJAiO2JSt69ApkriPHmW1f86/2ptckvJ8f5XFHAzvr9LjBPS288sCSeOj237SdQe8CfCb8QKHRG/+hjZtVv1x9bJ9PBAcoJSg0XRUOsHPXOxecjhrEDSBHl9t0VWnKNAnwrhYW7yq44YzGUPUoObzOdhsbgHIYV6lqzICJm+eDGtxEdg7/rkqTOVd01yk4afyZlOKWgp0Z49X+oLSht4FauAeRfd/m0P0TNas/DsUgEZCfLg7j84SH0/XL5HpKysOwdGROCI1fULJGHZwIDAQAB",
-   "manifest_version": 2,
-   "name": "博客园markdown插件",
-   "permissions": [ "tabs", "storage", "http://*/" ],
-   "version": "2.0",
+   "permissions": 
+   [ 
+   		"tabs", "storage", 
+   		"http://*/" // 解决跨域加载图片问题
+   	],
+   //资源可以被注入到页面
    "web_accessible_resources": [ "content/nest/*", "marked.js", "jquery-3.3.1.min.js" ]
 }
