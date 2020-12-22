@@ -21,9 +21,11 @@ try {
 				//告诉popup页是编辑页面
 				sendResponse({res: true});
 			} else if (request.type == "sendContenText") {
-				//给页面编辑器赋值
+				//给页面编辑器赋值, 并触发change/blur事件
 				$('#' + EDIT_TEXTAREA_ID).val(request.message);
 				$('#' + EDIT_TEXTAREA_ID).text(request.message);
+				$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('change'));
+				$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('blur'));
 				sendResponse({res: 'success'});
 			} else if (request.type == "getContenText") {
 				//返回页面内容

@@ -4,7 +4,7 @@
 console.log("detachEditUrl in");
 
 //编辑页面网址
-const EDIT_PAGE_URL = "https://i.cnblogs.com/posts/edit";
+const EDIT_PAGE_URL = "https://i.cnblogs.com/posts/edit;";
 
 //上次是否是编辑页面
 var lastIsEditPage = true;

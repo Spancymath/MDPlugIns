@@ -44,9 +44,11 @@ const EDIT_TEXTAREA_ID = "md-editor";
 //处理接收到的数据
 function dealData(data) {
 	if (data.message) {
-		//消息传给显示页和博客页面
+		//消息传给显示页和博客页面, 并触发change事件
 		viewWindow().postMessage(data, "*");
 		$("#" + EDIT_TEXTAREA_ID).val(data.message);
+		$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('change'));
+		$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('blur'));
 		autoUp(data.message);
 	}
 
@@ -184,7 +186,7 @@ function autoUp(text) {
 		increaseFlag = true;
 	    // console.log('autoUp 0', increaseFlag);
 		let hideHeight = spScrollHeight - spClientHeight - newSpScrollTop;
-		console.log(lastHideHeight, hideHeight);
+		// console.log(lastHideHeight, hideHeight);
 		//高度没有变化则返回
 		if (lastHideHeight === hideHeight) return;
 		lastHideHeight = hideHeight;
