@@ -13,8 +13,9 @@ function addViewBlank(text) {
 function toMardownStyle(text) {
 	//配合右边窗口最后一行看不到（新起一行时），加一行(\n是因为最后一行是网址会有问题)
 	text = addViewBlank(text);
-	// console.log(text);
+	// console.log(marked(text));
 	$('#content').html(marked(text));
+	MathJax.typeset();
 }
 
 //处理接收到的数据
@@ -50,3 +51,24 @@ function sendScrollData() {
 	};
 	window.parent.postMessage(data, '*');
 }
+
+//latex数学公式支持
+MathJax = {
+  tex: {
+    inlineMath: [              // start/end delimiter pairs for in-line math
+      ['$', '$']
+    ],
+    displayMath: [             // start/end delimiter pairs for display math
+      ['$$', '$$']
+    ],
+  },
+  options: {
+    skipHtmlTags: [            //  HTML tags that won't be searched for math
+        'script', 'noscript', 'style', 'textarea', 'pre',
+        'code', 'annotation', 'annotation-xml'
+    ],
+    renderActions: {
+      addMenu: [0, '', '']
+    }
+  }
+};
