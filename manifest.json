@@ -8,6 +8,7 @@
      "48": "icon48.png",
      "128": "icon128.png"
    },
+   "homepage_url": "https://www.cnblogs.com/so-easy/",// 插件主页
    "browser_action": {  //点击扩展程序事件
       "default_popup": "popup.html",//默认的弹出页面
       "default_title": "MD Plug ins"
