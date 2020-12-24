@@ -2,7 +2,7 @@ require("kitchen-sink/demo");
 //判断页面加载完成
 var loaded = false;
 //文本有变化才更新
-var sessionTextLocal = ""; 
+var sessionTextLocal = "";
 
 //页面初始化
 function onload() {
@@ -66,7 +66,12 @@ function toEditor(text) {
 function dealData(data) {
 	if (data.message) {
 		// console.log("edit message:" + data.message);
+		//是vim编辑模式则先转成Ace再转回来
+		var vimSelct = $('.ace_optionsMenuEntry button[value="ace/keyboard/vim"][ace_selected_button="true"]');
+		// console.log("vimSelct", vimSelct);
+		if (vimSelct.length) $('.ace_optionsMenuEntry button[value="null"]').trigger("click");
 		toEditor(data.message);
+		if (vimSelct.length) $('.ace_optionsMenuEntry button[value="ace/keyboard/vim"]').trigger("click");
 	}
 
 	if (data.scrollTop == 0 || data.scrollTop) {

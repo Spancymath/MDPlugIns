@@ -19,7 +19,7 @@ setTimeout(function() {
 	let isMarkdownMode = $("#" + MARKDOWN_SWITCH).text().indexOf("markdown") != -1;
 	if (!isMarkdownMode) {console.log("不是markdown模式"); return;}
 
-	//博客园自带编辑器更换触发事件
+	//博客园自带编辑器模式更换触发事件
 	$("#" + EDITOR_MENU).click(function() {
 		console.log("editor change");
 		$("#md_plugin_div").remove();

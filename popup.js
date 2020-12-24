@@ -87,6 +87,10 @@ function toMardownStyle(text) {
 
 //展示到编辑器
 function toEditor(text) {
+	//是vim编辑模式则先转成Ace再转回来
+	var vimSelct = getEditorWindow().$('.ace_optionsMenuEntry button[value="ace/keyboard/vim"][ace_selected_button="true"]');
+	//console.log("vimSelct", vimSelct);
+	if (vimSelct.length) getEditorWindow().$('.ace_optionsMenuEntry button[value="null"]').trigger("click");
 	var textDom = getEditorWindow().$('.ace_text-input');
 	// if (textDom.eq(0).val() != "") {
 	// 	console.log("清空");
@@ -97,6 +101,9 @@ function toEditor(text) {
 	textDom[0].dispatchEvent(new Event('input'));
 	//texare获取焦点，使得光标隐藏
 	textDom.eq(0).focus();
+	if (vimSelct.length) getEditorWindow().$('.ace_optionsMenuEntry button[value="ace/keyboard/vim"]').trigger("click");
+	//关闭侧边栏
+	getEditorWindow().onresize(null, true);
 }
 
 //展示回博客园编辑器
@@ -117,7 +124,7 @@ function toBlog(text) {
 function sendToContent(t, m) {
 	try {
 		chrome.tabs.query({active: true, currentWindow: true, url: EDIT_PAGE_URL}, function(tabs){  
-			console.log(t,tabs[0]);
+			// console.log(t,tabs[0]);
 			//判断是否是博客园页面
 			if (tabs[0] == undefined) {
 				blogEditPageFlag = false;
@@ -135,7 +142,7 @@ function sendToContent(t, m) {
 					}
 				} else if (t == 'getContenText') {
 					if(typeof response != 'undefined'){
-						console.log(response.res);
+						// console.log(response.res);
 						showToPopup(response.res);
 					}
 				}else if (t == 'sendContenText') {
