@@ -8,7 +8,6 @@
     height: 100%;
     display: none;
 }
-
 #nestMDDiv iframe {
     width: 100%;
     height: 100%;
@@ -35,12 +34,11 @@
     width: 28px;
     background: white;
 }
-
 #coloseDiv img {
 	width: 100%;
 }
 
-/**过度动画**/
+/**编辑器按钮加载动画**/
 .loadEffect{
     width: 20px;
     height: 20px;

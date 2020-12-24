@@ -15,6 +15,8 @@ function onload() {
 	//todo 不生效，有高手可以搞搞
 	// $('.ace_optionsMenuEntry #-doc').attr('disabled', "disabled");
 	// $('.ace_optionsMenuEntry #-mode').attr('disabled', "disabled");
+	/**编辑页面隐藏滚动条**/
+	$(".ace_scrollbar.ace_scrollbar-v").css("visibility","hidden");
 	
 	loaded = true;
 
