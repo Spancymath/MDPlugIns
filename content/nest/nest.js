@@ -114,7 +114,9 @@ var oldMessage = "";
 //高度变化触发窗口滑动阈值
 var heightThred = 35;
 //隐藏而不滚动的阈值
-var hideNotScrollThread = 100;
+var hideNotScrollThread = 50;
+//空白的高度
+var blankHeight = 14.3906 * 42;
 
 //输入框总高度
 var txtScrollHeight = 0, spScrollHeight = 0;
@@ -136,10 +138,11 @@ function txtScrolling(message) {
 		//判断编辑框、展示框隐藏是否超过阈值（防止在文件中间修改）
 		let hideEditor = scrollEditor - txtScrollTop;
 		let hideShow = scrollShow - spScrollTop;
+		console.log(hideEditor, hideShow, blankHeight);
 		//未超过阈值，上划编辑器到顶
-		if ((hideEditor > 0 || hideShow > 0)
-			&& hideEditor <= hideNotScrollThread || hideShow > hideNotScrollThread) {
-			txtScrollTop = txtScrollHeight - hideNotScrollThread;
+		if ((hideEditor > blankHeight - hideNotScrollThread || hideShow > blankHeight - hideNotScrollThread)
+			&& (hideEditor <=  blankHeight || hideShow <= blankHeight)) {
+			txtScrollTop = txtScrollHeight - txtClientHeight;
 			oldMessage = message;
 		}
 	}

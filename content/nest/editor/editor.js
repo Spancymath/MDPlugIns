@@ -38,6 +38,8 @@ $(".ace_content").bind('DOMNodeInserted', function(e) {
 			var data = {'message': linesText};
 			window.parent.postMessage(data, '*');
 			sessionTextLocal = linesText;
+			console.log("editor 新增 发送scroll数据");
+			sendScrollData();
 		}
 	}
 });
@@ -97,8 +99,11 @@ window.addEventListener('message', function (e) {
 	dealData(e.data);
 }, false);
 
-//监听页面滚动事件
-$(txtMain).on('scroll', function() {
+//监听页面滚动事件--在手动滑动和输入指针被隐藏的时候触发
+$(txtMain).on('scroll', sendScrollData);
+
+//发送scroll数据给nest.js
+function sendScrollData() {
 	var data = {
 		scroll: {
 			"message": sessionTextLocal,
@@ -108,9 +113,9 @@ $(txtMain).on('scroll', function() {
 			"from": "txtMain"
 		}
 	};
-	// console.log("txtMain发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
+	console.log("txtMain发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
 	window.parent.postMessage(data, '*');
-});
+}
 
 function refreshPage() {
 	//清空编辑器的值
