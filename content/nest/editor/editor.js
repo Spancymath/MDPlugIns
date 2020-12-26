@@ -100,12 +100,15 @@ window.addEventListener('message', function (e) {
 //监听页面滚动事件
 $(txtMain).on('scroll', function() {
 	var data = {
-		"scrollHeight": Math.round(txtMain.scrollHeight * 100) / 100,
-		"clientHeight": Math.round(txtMain.clientHeight * 100) / 100,
-		"scrollTop": Math.round(txtMain.scrollTop * 100) / 100,
-		"from": "txtMain"
+		scroll: {
+			"message": sessionTextLocal,
+			"scrollHeight": Math.round(txtMain.scrollHeight * 100) / 100,
+			"clientHeight": Math.round(txtMain.clientHeight * 100) / 100,
+			"scrollTop": Math.round(txtMain.scrollTop * 100) / 100,
+			"from": "txtMain"
+		}
 	};
-	// console.log("txtMain发送scroll数据：" + data.scrollHeight, data.clientHeight);
+	// console.log("txtMain发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
 	window.parent.postMessage(data, '*');
 });
 

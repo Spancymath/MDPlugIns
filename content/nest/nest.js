@@ -11,11 +11,8 @@ function popEditClick() {
 	editorWindow().postMessage({"message": message, "dealType": "setSidePanel"}, "*");
 	$('#nestMDDiv').show();
 	$('cnb-root').hide();
-	setTimeout(function() {
-		spScrollTop = 0;
-		scrolling("pre");
-		// console.log("timeout pre");
-	}, 200);
+
+	initSychroHeight();
 }
 
 //点击关闭编辑器
@@ -24,6 +21,19 @@ function closeEditClick() {
 	$('cnb-root').show();
 	$('#nestMDDiv').hide();
 	editorWindow().postMessage({"dealType": "clear"}, "*");
+	initSychroHeight();
+}
+
+function initSychroHeight() {
+	//初始化展示框和编辑框在同一高度
+	setTimeout(function() {
+		// console.log("timeout", spScrollTop);
+		// 预览框的高度值初始化过，直接返回
+		if (spScrollTop != 0) return;
+
+		oldTxtScrollTop = 0;
+		sendScroll2Txt();
+	}, 100);
 }
 
 //得到编辑器contentWindow
@@ -38,7 +48,20 @@ function viewWindow() {
 const EDIT_TEXTAREA_ID = "md-editor";
 
 /**
- * 消息格式：{from: "", to: "", message: "", scrollHeight: , clientHeight: , dealType: ""}
+ * 消息格式：
+ * {
+		from: "",
+		to: "",
+		message: "",
+		scroll: {
+			from: "",
+			message: "",
+			scrollHeight: ,
+			clientHeight: ,
+			crollTop:
+		},
+		dealType: ""
+	}
  */
 
 //处理接收到的数据
@@ -49,22 +72,22 @@ function dealData(data) {
 		$("#" + EDIT_TEXTAREA_ID).val(data.message);
 		$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('change'));
 		$("#" + EDIT_TEXTAREA_ID)[0].dispatchEvent(new Event('blur'));
-		autoUp(data.message);
 	}
 
 	// console.log(data.scrollTop, data.scrollHeight, data.clientHeight, data.from);
-	if (data.scrollTop == 0 || data.scrollTop) {
-		if (data.from == "preview") {
-			spScrollHeight = data.scrollHeight;
-			spClientHeight = data.clientHeight;
-			newSpScrollTop = data.scrollTop;
-			scrolling('pre');
+	if (data.scroll) {
+		var scrollData = data.scroll;
+		if (scrollData.from == "preview") {
+			spScrollHeight = scrollData.scrollHeight;
+			spClientHeight = scrollData.clientHeight;
+			spScrollTop = scrollData.scrollTop;
+			spScrolling();
 		}
-		else if (data.from == "txtMain") {
-			txtScrollHeight = data.scrollHeight;
-			txtClientHeight = data.clientHeight;
-			newTxtScrollTop = data.scrollTop;
-			scrolling('main');
+		else if (scrollData.from == "txtMain") {
+			txtScrollHeight = scrollData.scrollHeight;
+			txtClientHeight = scrollData.clientHeight;
+			txtScrollTop = scrollData.scrollTop;
+			txtScrolling(scrollData.message);
 		}
 	}
 
@@ -85,132 +108,78 @@ window.addEventListener('message', function (e) {
 }, false);
 
 
-//编辑框预览框实时滚动
-//增加标志
-var increaseFlag = false;
-//上一次隐藏高度
-var lastHideHeight = 0;
-//高度变化触发阈值
+/*编辑框预览框实时滚动*/
+//缓存输入文本
+var oldMessage = "";
+//高度变化触发窗口滑动阈值
 var heightThred = 35;
-//缓存预览框top高度
-var spScrollTop = 0;
-//缓存输入框top高度
-var txtScrollTop = 0;
-//预览框top高度
-var newSpScrollTop = 0;
-//输入框top高度
-var newTxtScrollTop = 0;
+//隐藏而不滚动的阈值
+var hideNotScrollThread = 100;
 
-var txtScrollHeight = 0;//输入框总高度
-var spScrollHeight = 0;//预览框总高度
+//输入框总高度
+var txtScrollHeight = 0, spScrollHeight = 0;
+//输入框高度
+var txtClientHeight = 0, spClientHeight = 0;
 
-var txtClientHeight = 0;//输入框高度
-var spClientHeight = 0;//预览框高度
+//缓存预览框top高度, 缓存输入框top高度
+var oldSpScrollTop = 0, oldTxtScrollTop = 0;
+//预览框top高度, 输入框top高度
+var spScrollTop = 0, txtScrollTop = 0;
 
-let mainFlag = false; // 抵消两个滚动事件之间互相触发
-let preFlag = false; // 如果两个 flag 都为 true，证明是反弹过来的事件引起的
-function scrolling(who){
-  if(who == 'pre'){
-    preFlag = true;
-    if (mainFlag === true){ // 抵消两个滚动事件之间互相触发
-      mainFlag = false;
-      preFlag = false;
-      return;
-    }
-    let tetLeft = txtScrollHeight - txtClientHeight;
-    let spLeft = spScrollHeight - spClientHeight;
-    // console.log("pre: " + spScrollTop, newSpScrollTop, spLeft, tetLeft);
-    //编辑器窗口未达到滚动长度，还没有出现滚动条
-    if (spLeft <= 0) return;
-    // var newTop = Math.round(tetLeft * spPreview.scrollTop  / spLeft);
-    // if (Math.abs(newTop - txtMain.scrollTop) > heightThred) {
-    // 	txtMain.scrollTop = newTop;
-    // }
-    
-    //顶部优化newSpScrollTop==0的时候
-    if (!newSpScrollTop) {
-    	newTxtScrollTop = 0;
-    	sendScroll2Txt();
-    	txtScrollTop = newTxtScrollTop;
-    }
-    //编辑器窗口高度变化大于阈值，才触发编辑器窗口滚动--优化编辑器窗口上下弹跳
-    if (Math.abs(spScrollTop - newSpScrollTop) > heightThred) {
-    	newTxtScrollTop = Math.round(tetLeft * newSpScrollTop  / spLeft * 100) / 100;
-    	sendScroll2Txt();
-    	txtScrollTop = newTxtScrollTop;
-    }
-  }
-  if(who == 'main'){
-    mainFlag = true;
-    if (preFlag === true){ // 抵消两个滚动事件之间互相触发
-      mainFlag = false;
-      preFlag = false;
-      return;
-    }
-    let tetLeft = txtScrollHeight - txtClientHeight;
-    let spLeft = spScrollHeight - spClientHeight;
-    //预览窗口没达到滚动高度
-    if (tetLeft <= 0) return;
-
-    //顶部优化
-    if (!newTxtScrollTop) {
-    	newSpScrollTop = 0;
-    	sendScroll2Preview();
-    	spScrollTop = newSpScrollTop;
-    }
-    //输入框top没变化，返回
-    if (Math.abs(txtScrollTop - newTxtScrollTop) <= heightThred) return;
-    txtScrollTop = newTxtScrollTop;
-    //如果在输入则不触发scroll
-    // console.log('1', increaseFlag);
-    if (increaseFlag) {
-    	increaseFlag = false;
-    	return;
-    }
-    // console.log('main --> pre', txtScrollTop, newTxtScrollTop);
-    newSpScrollTop = Math.round(spLeft * newTxtScrollTop / tetLeft * 100) / 100;
-    sendScroll2Preview(newSpScrollTop);
-    spScrollTop = newSpScrollTop;
-  }
-}
-
-//上一次展示内容
-var oldText = "";
-//预览页面插入的空行的高度
-var blankHeight = 560;
-
-//自动翻页
-function autoUp(text) {
-	//如果编辑器内容增加
-	if (oldText != "" && text.length > oldText.length) {
-		increaseFlag = true;
-	    // console.log('autoUp 0', increaseFlag);
-		let hideHeight = spScrollHeight - spClientHeight - newSpScrollTop;
-		// console.log(lastHideHeight, hideHeight);
-		//高度没有变化则返回
-		if (lastHideHeight === hideHeight) return;
-		lastHideHeight = hideHeight;
-		// console.log('hideHeight: ' + hideHeight);
-		//如果在内容中间修改，则返回
-		if (hideHeight > blankHeight + blankHeight / 16)
-			return;
-		//如果预览框隐藏了内容，就向上滚动
-		if (hideHeight > blankHeight) {
-			console.log('up');
-			newSpScrollTop = spScrollHeight - spClientHeight - blankHeight / 5;
-			sendScroll2Preview();
-			//这里不修改spScrollTop的值，待show页面回传过来再修改
+//处理编辑器滚动
+function txtScrolling(message) {
+	//净可滚动高度
+	let scrollEditor = txtScrollHeight - txtClientHeight;
+    let scrollShow = spScrollHeight - spClientHeight;
+    // console.log(scrollEditor, scrollShow, "txtScrolling");
+	if (oldMessage.length != message.length) {
+		//判断编辑框、展示框隐藏是否超过阈值（防止在文件中间修改）
+		let hideEditor = scrollEditor - txtScrollTop;
+		let hideShow = scrollShow - spScrollTop;
+		//未超过阈值，上划编辑器到顶
+		if ((hideEditor > 0 || hideShow > 0)
+			&& hideEditor <= hideNotScrollThread || hideShow > hideNotScrollThread) {
+			txtScrollTop = txtScrollHeight - hideNotScrollThread;
+			oldMessage = message;
 		}
 	}
-	oldText = text;
+
+	//没达到阈值，不触发联动滚动
+	if (!overThred(oldTxtScrollTop, txtScrollTop)) return;
+	oldTxtScrollTop = txtScrollTop;
+	//调整展示器
+	oldSpScrollTop = scrollShow * (txtScrollTop / scrollEditor);
+	sendScroll2Preview();
 }
 
+//处理展示器滚动
+function spScrolling() {
+	//没达到阈值，不触发联动滚动
+	if (!overThred(oldSpScrollTop, spScrollTop)) return;
+	oldSpScrollTop = spScrollTop;
+
+	//净可滚动高度
+	let scrollEditor = txtScrollHeight - txtClientHeight;
+    let scrollShow = spScrollHeight - spClientHeight;
+	//调整编辑器
+	oldTxtScrollTop = scrollEditor * (spScrollTop / scrollShow);
+	sendScroll2Txt();
+}
+
+
+//是否超过滚动阈值
+function overThred(oldHeight, newHeight) {
+	return Math.abs(oldHeight - newHeight) > heightThred;
+}
+
+//通知展示框滚动
 function sendScroll2Preview() {
-	var data = {"scrollTop": newSpScrollTop};
+	var data = {"scrollTop": oldSpScrollTop};
 	viewWindow().postMessage(data, "*");
 }
 
+//通知文本框滚动
 function sendScroll2Txt() {
-	var data = {"scrollTop": newTxtScrollTop};
+	var data = {"scrollTop": oldTxtScrollTop};
 	editorWindow().postMessage(data, "*");
 }

@@ -44,11 +44,14 @@ window.addEventListener('scroll', sendScrollData, false);
 
 function sendScrollData() {
 	var data = {
-		"scrollHeight": Math.round(spPreview.scrollHeight * 100) / 100,
-		"clientHeight": Math.round(spPreview.clientHeight * 100) / 100,
-		"scrollTop": Math.round(spPreview.scrollTop * 100) / 100,
-		"from": "preview"
+		scroll: {
+			"scrollHeight": Math.round(spPreview.scrollHeight * 100) / 100,
+			"clientHeight": Math.round(spPreview.clientHeight * 100) / 100,
+			"scrollTop": Math.round(spPreview.scrollTop * 100) / 100,
+			"from": "preview"
+		}
 	};
+	// console.log("preview发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
 	window.parent.postMessage(data, '*');
 }
 
