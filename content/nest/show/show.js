@@ -51,7 +51,7 @@ function sendScrollData() {
 			"from": "preview"
 		}
 	};
-	console.log("preview发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
+	// console.log("preview发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
 	window.parent.postMessage(data, '*');
 }
 

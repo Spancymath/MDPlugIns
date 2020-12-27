@@ -138,7 +138,7 @@ function txtScrolling(message) {
 		//判断编辑框、展示框隐藏是否超过阈值（防止在文件中间修改）
 		let hideEditor = scrollEditor - txtScrollTop;
 		let hideShow = scrollShow - spScrollTop;
-		console.log(hideEditor, hideShow, blankHeight);
+		// console.log(hideEditor, hideShow, blankHeight);
 		//未超过阈值，上划编辑器到顶
 		if ((hideEditor > blankHeight - hideNotScrollThread || hideShow > blankHeight - hideNotScrollThread)
 			&& (hideEditor <=  blankHeight || hideShow <= blankHeight)) {

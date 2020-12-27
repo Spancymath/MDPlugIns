@@ -16,7 +16,7 @@ function onload() {
 	// $('.ace_optionsMenuEntry #-doc').attr('disabled', "disabled");
 	// $('.ace_optionsMenuEntry #-mode').attr('disabled', "disabled");
 	/**编辑页面隐藏滚动条**/
-	$(".ace_scrollbar.ace_scrollbar-v").css("visibility","hidden");
+	$(".ace_scrollbar.ace_scrollbar-v").css("opacity", 0.6);
 	
 	loaded = true;
 
@@ -113,7 +113,7 @@ function sendScrollData() {
 			"from": "txtMain"
 		}
 	};
-	console.log("txtMain发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
+	// console.log("txtMain发送scroll数据：" + data.scroll.scrollHeight, data.scroll.clientHeight);
 	window.parent.postMessage(data, '*');
 }
 
