@@ -16,4 +16,4 @@ chrome扩展程序或者插件离线安装软件, 欢迎访问我的博客下载
 > https://github.com/markedjs/marked.git
 
 
-[少年小白]: https://www.cnblogs.com/so-easy/p/9782901.html
+[少年小白]: https://www.cnblogs.com/so-easy/p/14197258.html
